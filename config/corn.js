@@ -380,7 +380,7 @@ module.exports.cron = {
     },
 
     job4: {
-      schedule: '1 * * * * *',
+      schedule: '* * 8 * * *',
       // in May 17 15:47:30 GMT-0300 (BRT)
       onTick: function() {
       var res = require('request');
@@ -414,7 +414,7 @@ module.exports.cron = {
         }
         console.log("balance:"+balance+" lastday_balance:"+lastday_balance+" change:"+change);
         console.log("所有交易所比特币余额准备数据入库 lastdate:"+date);
-        let b1 = await Balance.find({date:date});
+        let b1 = await Balance.find({date:date,exchange:exchange});
         if(b1.length>0){
           console.log("所有交易所比特币余额数据入库 date:"+date+"的记录已存在，跳过。");
         }else{
@@ -445,7 +445,7 @@ module.exports.cron = {
     },
 
     job5: {
-      schedule: '1 * * * * *',
+      schedule: '* * 8 * * *',
       // in May 17 15:47:30 GMT-0300 (BRT)
       onTick: function() {
       var res = require('request');
@@ -510,7 +510,7 @@ module.exports.cron = {
     },
 
     job6: {
-      schedule: '1 * * * * *',
+      schedule: '* * 8 * * *',
       // in May 17 15:47:30 GMT-0300 (BRT)
       onTick: function() {
       var res = require('request');
