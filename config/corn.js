@@ -1,6 +1,6 @@
 module.exports.cron = {
     job1: {
-      schedule: '1 * * * * *',
+      schedule: '2 * * * * *',
       // in May 17 15:47:30 GMT-0300 (BRT)
       onTick: function() {
         console.log("开始采集MCD数据");
@@ -47,338 +47,194 @@ module.exports.cron = {
         // timezone Brazil example
       },
 
-      job2: {
-      schedule: '* 1 * * * *',
-      // in May 17 15:47:30 GMT-0300 (BRT)
-      onTick: function() {
-      var res = require('request');
-      const axios = require('axios');
-      const cheerio = require('cheerio') 
-      const targetUrl = "https://www.qkl123.com/data/s2f/btc";
-      var mcd = "";
-      var price = "";
-      axios.get(targetUrl).then(async function (res) {
-        // handle success
-        //console.log(res.data);
-        console.log("开始采集S2F数据");
-        let $ = cheerio.load(res.data, {
-          decodeEntities: false,
-        });
-        var lastdate = $(".week-data__item:eq(7) ").find(".week-data__header").text();
-        lastdate = String(lastdate).replace(/(^\s*)|(\s*$)/g, "");
-        var tmpstr="";
-        var tempprice;
-        var tempchange="";
-        var index=0;
-        var index2=0;
-        var index3=0;
-        var num = 0;
-        var price;
-        var s2fMonth;
-        var s2fMonthChange;
-        var s2fYear;
-        var s2fYearChange;
-        var predictMonth;
-        var predictMonthChange;
-        var predictYear;
-        var predictYearChange;
-        var symbol = "BTC";
-        $(".week-data__item:eq(7) ").find(".week-data__value").each(function () { 
-            tmpstr = $(this).text().replace(/(^\s*)|(\s*$)/g, "");
-            tmpstr = tmpstr.replace("$","");
-            index = tmpstr.indexOf("万");
-            index2 = tmpstr.indexOf("(");
-            index3 = tmpstr.indexOf(")");
-            tempchange = tmpstr.substring(index2+1,index3);
-            if(index>0){
-              tmpstr = tmpstr.substring(0,index);
-              tempprice= Number(tmpstr) * 10000;
-            }else{
-              if(index2>0){
-                 tmpstr = tmpstr.substring(0,index2);
-                 tempprice= Number(tmpstr);
-              }else{
-                 tempprice= Number(tmpstr);
-              }
-            }
-            switch (num) {
-              case 0:
-                  price  = tempprice;
-                  change = tempchange;
-                  break;
-              case 1:
-                  s2fMonth  = tempprice;
-                  s2fMonthChange = tempchange;
-                  break;
-              case 2:
-                  s2fYear  = tempprice;
-                  s2fYearChange = tempchange;
-                  break;
-              case 3:
-                  predictMonth  = tempprice;
-                  predictMonthChange = tempchange;
-                  break;
-              case 4:
-                  predictYear  = tempprice;
-                  predictYearChange = tempchange;
-                  break;
-              default:
+      // job2: {
+      // schedule: '* 1 * * * *',
+      // // in May 17 15:47:30 GMT-0300 (BRT)
+      // onTick: function() {
+      // var res = require('request');
+      // const axios = require('axios');
+      // const cheerio = require('cheerio') 
+      // const targetUrl = "https://www.qkl123.com/data/s2f/btc";
+      // var mcd = "";
+      // var price = "";
+      // axios.get(targetUrl).then(async function (res) {
+      //   // handle success
+      //   //console.log(res.data);
+      //   console.log("开始采集S2F数据");
+      //   let $ = cheerio.load(res.data, {
+      //     decodeEntities: false,
+      //   });
+      //   var lastdate = $(".week-data__item:eq(7) ").find(".week-data__header").text();
+      //   lastdate = String(lastdate).replace(/(^\s*)|(\s*$)/g, "");
+      //   var tmpstr="";
+      //   var tempprice;
+      //   var tempchange="";
+      //   var index=0;
+      //   var index2=0;
+      //   var index3=0;
+      //   var num = 0;
+      //   var price;
+      //   var change;
+      //   var s2fMonth;
+      //   var s2fMonthChange;
+      //   var s2fYear;
+      //   var s2fYearChange;
+      //   var predictMonth;
+      //   var predictMonthChange;
+      //   var predictYear;
+      //   var predictYearChange;
+      //   var symbol = "BTC";
+      //   $(".week-data__item:eq(7) ").find(".week-data__value").each(function () { 
+      //       tmpstr = $(this).text().replace(/(^\s*)|(\s*$)/g, "");
+      //       tmpstr = tmpstr.replace("$","");
+      //       index = tmpstr.indexOf("万");
+      //       index2 = tmpstr.indexOf("(");
+      //       index3 = tmpstr.indexOf(")");
+      //       tempchange = tmpstr.substring(index2+1,index3);
+      //       if(index>0){
+      //         tmpstr = tmpstr.substring(0,index);
+      //         tempprice= Number(tmpstr) * 10000;
+      //       }else{
+      //         if(index2>0){
+      //            tmpstr = tmpstr.substring(0,index2);
+      //            tempprice= Number(tmpstr);
+      //         }else{
+      //            tempprice= Number(tmpstr);
+      //         }
+      //       }
+      //       switch (num) {
+      //         case 0:
+      //             price  = tempprice;
+      //             change = tempchange;
+      //             break;
+      //         case 1:
+      //             s2fMonth  = tempprice;
+      //             s2fMonthChange = tempchange;
+      //             break;
+      //         case 2:
+      //             s2fYear  = tempprice;
+      //             s2fYearChange = tempchange;
+      //             break;
+      //         case 3:
+      //             predictMonth  = tempprice;
+      //             predictMonthChange = tempchange;
+      //             break;
+      //         case 4:
+      //             predictYear  = tempprice;
+      //             predictYearChange = tempchange;
+      //             break;
+      //         default:
                   
-            }
-            num++;
-        });
+      //       }
+      //       num++;
+      //   });
 
-        console.log("S2F准备数据入库 lastdate:"+lastdate);
-        let s2f = await S2fBtc.find({date:lastdate});
-        if(s2f.length>0){
-          console.log("S2F数据入库 lastdate:"+lastdate+"的记录已存在，跳过。");
-        }else{
-          await S2fBtc.create({
-            price:price, 
-            change:change, 
-            s2fMonth:s2fMonth , 
-            s2fMonthChange:s2fMonthChange,
-            s2fYear:s2fYear, 
-            s2fYearChange:s2fYearChange, 
-            predictMonth:predictMonth , 
-            predictMonthChange:predictMonthChange,
-            predictYear:predictYear, 
-            predictYearChange:predictYearChange, 
-            date:lastdate , 
-            symbol:symbol
-          });
-           console.log("S2F数据入库成功 lastdate:"+lastdate);
-        }
-      })
-      .catch(function (error) {
-          // handle error
-          console.log(error);
-      })
-      .finally( function () {
-        return 0;
-      }); 
-        },
-        start: true, // Start task immediately
-        timezone: 'Asia/Taipei',
-        runOnInit: true
-        // timezone Brazil example
-      },
+      //   console.log("S2F准备数据入库 lastdate:"+lastdate);
+      //   let s2f = await S2fBtc.find({date:lastdate});
+      //   if(s2f.length>0){
+      //     console.log("S2F数据入库 lastdate:"+lastdate+"的记录已存在，跳过。");
+      //   }else{
+      //     await S2fBtc.create({
+      //       price:price, 
+      //       change:change, 
+      //       s2fMonth:s2fMonth , 
+      //       s2fMonthChange:s2fMonthChange,
+      //       s2fYear:s2fYear, 
+      //       s2fYearChange:s2fYearChange, 
+      //       predictMonth:predictMonth , 
+      //       predictMonthChange:predictMonthChange,
+      //       predictYear:predictYear, 
+      //       predictYearChange:predictYearChange, 
+      //       date:lastdate , 
+      //       symbol:symbol
+      //     });
+      //      console.log("S2F数据入库成功 lastdate:"+lastdate);
+      //   }
+      // })
+      // .catch(function (error) {
+      //     // handle error
+      //     console.log(error);
+      // })
+      // .finally( function () {
+      //   return 0;
+      // }); 
+      //   },
+      //   start: true, // Start task immediately
+      //   timezone: 'Asia/Taipei',
+      //   runOnInit: true
+      //   // timezone Brazil example
+      // },
 
       job3: {
-      schedule: '* 1 * * * *',
+      schedule: '* 2 * * * *',
       // in May 17 15:47:30 GMT-0300 (BRT)
       onTick: function() {
       var res = require('request');
+      var apikey = "1wkyQc3skIy0jj3N37i73GNuZWT";
+      var targetUrl = "https://api.glassnode.com/v1/metrics/market/price_usd_close?a=BTC&i=24h";
       const axios = require('axios');
-      const cheerio = require('cheerio') 
-      const targetUrl = "https://www.qkl123.com/data/acc_increase/btc";
-      var mcd = "";
-      var price = "";
-      axios.get(targetUrl).then(async function (res) {
-        // handle success
-        //console.log(res.data);
-        console.log("开始采集ACC-INCREASE数据");
-        let $ = cheerio.load(res.data, {
-          decodeEntities: false,
-        });
-        var lastdate = $(".week-data__item:eq(7) ").find(".week-data__header").text();
-        lastdate = String(lastdate).replace(/(^\s*)|(\s*$)/g, "");
-        
-        var tmpstr="";
-        var tempprice;
-        var tempchange="";
-        var index=0;
-        var index2=0;
-        var index3=0;
-        var num = 0;
-        var price;
-        var day1;
-        var day7;
-        var day30;
-        var day60;
-        var day90;
-        var symbol = "BTC";
-        $(".week-data__item:eq(7) ").find(".week-data__value").each(function () { 
-            tmpstr = $(this).text().replace(/(^\s*)|(\s*$)/g, "");
-            console.log(" tmpstr = "+tmpstr);
-            switch (num) {
-              case 0:
-                  tmpstr = tmpstr.replace("$","");
-                  index = tmpstr.indexOf("万");
-                  index2 = tmpstr.indexOf("(");
-                  index3 = tmpstr.indexOf(")");
-                  tempchange = tmpstr.substring(index2+1,index3);
-                  if(index>0){
-                    tmpstr = tmpstr.substring(0,index);
-                    tempprice= Number(tmpstr) * 10000;
-                  }else{
-                    if(index2>0){
-                       tmpstr = tmpstr.substring(0,index2);
-                       tempprice= Number(tmpstr);
-                    }else{
-                       tempprice= Number(tmpstr);
-                    }
-                  }
-                  price  = tempprice;
-                  day1 = tempchange;
-                  break;
-              case 1:
-                  day7  = tmpstr;
-                  break;
-              case 2:
-                  day30  = tmpstr;
-                  break;
-              case 3:
-                  day60  = tmpstr;
-                  break;
-              case 4:
-                  day90  = tmpstr;
-                  break;
-              default:
-                  
-            }
-            num++;
-        });
-
-        console.log("ACC准备数据入库 lastdate:"+lastdate);
-        let acc = await AccIncreaseBtc.find({date:lastdate});
-        if(acc.length>0){
-          console.log("ACC数据入库 lastdate:"+lastdate+"的记录已存在，跳过。");
-        }else{
-          await AccIncreaseBtc.create({
-            price:price, 
-            day1:day1, 
-            day7:day7, 
-            day30:day30, 
-            day60:day60, 
-            day90:day90, 
-            date:lastdate , 
-            symbol:symbol
-          });
-           console.log("ACC数据入库成功 lastdate:"+lastdate);
+      axios.get(targetUrl,{
+        params:{
+          api_key:apikey
         }
-     })
+      }).then(async function (res) {
+        console.log("开始请求历史价格数据");
+        var price;
+        var date;
+        var lastday_price;
+        var lastdate;
+        var jsonData = res.data;
+        var breaknum = 0;
+        var limit = 7;
+        var symbol = "BTC";
+        let b1;
+        for (var i = jsonData.length - 1; i >= 0; i--) {
+          if(breaknum>=limit || (jsonData.length-1)-i>=limit){
+            break;
+          }
+          price = jsonData[i].v;
+          date =  jsonData[i].t;
+          console.log("最新数据 price:"+price+" date:"+date);
+          b1 = await Price.find({date:date});
+          if(b1.length>0){
+            breaknum++;
+            console.log("最新数据比特币价格 date:"+date+"的记录已存在，跳过。breaknum："+breaknum);
+          }
+        }
+        if(breaknum<limit){
+            breaknum = 0;
+            for (var i = 0; i <=jsonData.length - 1; i++) {
+            price = jsonData[i].v;
+            date =  jsonData[i].t;
+            console.log("totay price:"+price+" date:"+date);
+            b1 = await Price.find({date:date});
+            if(b1.length>0){
+              console.log("比特币价格数据入库 date:"+date+"的记录已存在，跳过。");
+              breaknum++;
+            }else{
+               await Price.create({
+                price:price, 
+                date:date,
+                symbol:symbol
+              });
+               console.log("比特币价格数据入库成功 date:"+date);
+            }  
+          }
+        }
+    })
     .catch(function (error) {
         // handle error
         console.log(error);
     })
     .finally(async function () {
       return 0;
-    });  
+    }) 
       },
       start: true, // Start task immediately
       timezone: 'Asia/Taipei',
       runOnInit: true
       // timezone Brazil example
     },
-    job3: {
-      schedule: '* 1 * * * *',
-      // in May 17 15:47:30 GMT-0300 (BRT)
-      onTick: function() {
-      var res = require('request');
-      const axios = require('axios');
-      const cheerio = require('cheerio') 
-      const targetUrl = "https://www.qkl123.com/data/acc_increase/btc";
-      var mcd = "";
-      var price = "";
-      axios.get(targetUrl).then(async function (res) {
-        // handle success
-        //console.log(res.data);
-        console.log("开始采集ACC-INCREASE数据");
-        let $ = cheerio.load(res.data, {
-          decodeEntities: false,
-        });
-        var lastdate = $(".week-data__item:eq(7) ").find(".week-data__header").text();
-        lastdate = String(lastdate).replace(/(^\s*)|(\s*$)/g, "");
-        
-        var tmpstr="";
-        var tempprice;
-        var tempchange="";
-        var index=0;
-        var index2=0;
-        var index3=0;
-        var num = 0;
-        var price;
-        var day1;
-        var day7;
-        var day30;
-        var day60;
-        var day90;
-        var symbol = "BTC";
-        $(".week-data__item:eq(7) ").find(".week-data__value").each(function () { 
-            tmpstr = $(this).text().replace(/(^\s*)|(\s*$)/g, "");
-            console.log(" tmpstr = "+tmpstr);
-            switch (num) {
-              case 0:
-                  tmpstr = tmpstr.replace("$","");
-                  index = tmpstr.indexOf("万");
-                  index2 = tmpstr.indexOf("(");
-                  index3 = tmpstr.indexOf(")");
-                  tempchange = tmpstr.substring(index2+1,index3);
-                  if(index>0){
-                    tmpstr = tmpstr.substring(0,index);
-                    tempprice= Number(tmpstr) * 10000;
-                  }else{
-                    if(index2>0){
-                       tmpstr = tmpstr.substring(0,index2);
-                       tempprice= Number(tmpstr);
-                    }else{
-                       tempprice= Number(tmpstr);
-                    }
-                  }
-                  price  = tempprice;
-                  day1 = tempchange;
-                  break;
-              case 1:
-                  day7  = tmpstr;
-                  break;
-              case 2:
-                  day30  = tmpstr;
-                  break;
-              case 3:
-                  day60  = tmpstr;
-                  break;
-              case 4:
-                  day90  = tmpstr;
-                  break;
-              default:
-                  
-            }
-            num++;
-        });
-
-        console.log("ACC准备数据入库 lastdate:"+lastdate);
-        let acc = await AccIncreaseBtc.find({date:lastdate});
-        if(acc.length>0){
-          console.log("ACC数据入库 lastdate:"+lastdate+"的记录已存在，跳过。");
-        }else{
-          await AccIncreaseBtc.create({
-            price:price, 
-            day1:day1, 
-            day7:day7, 
-            day30:day30, 
-            day60:day60, 
-            day90:day90, 
-            date:lastdate , 
-            symbol:symbol
-          });
-           console.log("ACC数据入库成功 lastdate:"+lastdate);
-        }
-     })
-    .catch(function (error) {
-        // handle error
-        console.log(error);
-    })
-    .finally(async function () {
-      return 0;
-    });  
-      },
-      start: true, // Start task immediately
-      timezone: 'Asia/Taipei',
-      runOnInit: true
-      // timezone Brazil example
-    },
-
     job4: {
       schedule: '* * 8 * * *',
       // in May 17 15:47:30 GMT-0300 (BRT)

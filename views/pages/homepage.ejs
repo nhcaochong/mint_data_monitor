@@ -120,7 +120,7 @@
                   </div>
                   <div class="col-xs-8">
                     <div class="numbers">
-                      <p>S2F预期(年)</p>
+                      <p>S2F预期比特币价格(年)</p>
                       <span id="s2f_btc_predict_year" class="text-success"></span>
                       <span id="s2f_btc_predict_year_change"></span>
                     </div>
@@ -422,6 +422,7 @@
     $.each(result, function (i, field) {
 
       $("#bitcoin_price").text("$" + field.usd);
+      $("title").text("$" + field.usd+"/BTC");
     });
   });
   //设置比特币交易所LIST
@@ -481,36 +482,59 @@
   });
 
 
-  //设置60日涨幅(单)
-  $.getJSON("/accincreasebtc", { sort: "id desc", limit: 7 }, function (result) {
+  //设置60日涨幅(列表)
+  $.getJSON("/getAccData", {limit:7}, function (result) {
     var innerHTML = '';
+      var day7;
+      var day30;
+      var day60;
+      var day90;
+      var day1;
+      var price;
+      var date;
     $.each(result, function (i, field) {
+       d= field.date * 1000;
+       date = new Date(d);
+        Y = date.getFullYear() + '-';
+        M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+        D = date.getDate() + '';
+      day7 = field.day7.toFixed(2);
+      day30 = field.day30.toFixed(2);
+      day60 = field.day60.toFixed(2);
+      day90 = field.day90.toFixed(2);
+      day1 = field.day1.toFixed(2);
+      price = field.price.toFixed(2);
       if (null != field) {
         innerHTML += '<tr>';
-        innerHTML += ' <td>' + field.date + '</td>';
-        innerHTML += ' <td>' + field.day7 + '</td>';
-        innerHTML += ' <td>' + field.day30 + '</td>';
-        innerHTML += ' <td class="info">' + field.day60 + '</td>';
-        innerHTML += ' <td>' + field.day90 + '</td>';
-        innerHTML += ' <td class="text-primary">' + field.price + '(' + field.day1 + ')</td>';
+        innerHTML += ' <td>' + Y + M + D + '</td>';
+        innerHTML += ' <td>' + day7 + '%</td>';
+        innerHTML += ' <td>' + day30 + '%</td>';
+        innerHTML += ' <td class="info">' + day60 + '%</td>';
+        innerHTML += ' <td>' + day90 + '%</td>';
+        innerHTML += ' <td class="text-primary">' + price + '(' + day1 + '%)</td>';
         innerHTML += '</tr>';
-
       }
     });
     $("#acc_increase_list").html(innerHTML);
   });
 
   //设置江卓尔累计模型最新60天的数字
-  $.getJSON("/accincreasebtc", { sort: "id desc", limit: 1 }, function (result) {
+  $.getJSON("/getAccData?limit=1",function (result) {
     $.each(result, function (i, field) {
-      if (field.day60.indexOf("-") >= 0) {
+      d= field.date * 1000;
+      date = new Date(d);
+      Y = date.getFullYear() + '-';
+      M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+      D = date.getDate() + '';
+      day60 = field.day60.toFixed(2);
+      if (field.day60 >= 0) {
         $("#acc_increase_btc_day60").addClass("text-danger");
-        $("#acc_increase_btc_day60").text(field.day60 + "");
+        $("#acc_increase_btc_day60").text(day60 + "%");
       } else {
         $("#acc_increase_btc_day60").addClass("text-success");
-        $("#acc_increase_btc_day60").text(field.day60 + "");
+        $("#acc_increase_btc_day60").text(day60 + "%");
       }
-      $("#acc_increase_btc_day60_date").text(field.date);
+      $("#acc_increase_btc_day60_date").text(Y + M + D);
     });
   });
 
@@ -548,7 +572,7 @@
    //设置 MCD
   $.getJSON("/coin", { sort: "id desc", limit: 1 }, function (result) {
     $.each(result, function (i, field) {
-      var date = new Date(field.createdAt);
+        var date = new Date(field.createdAt);
         Y = date.getFullYear() + '-';
         M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
         D = date.getDate() + '';

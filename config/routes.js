@@ -23,9 +23,14 @@ module.exports.routes = {
     view: 'pages/homepage',
   },
 
-  'GET /getExchangeBalanceJson': {
+  'GET /setCoinData': {
     controller: 'DataControllerController',
-    action: 'getExchangeBalanceJson',
+    action: 'setCoinData',
+    skipAssets: true
+  },
+  'GET /getAccData': {
+    controller: 'DataControllerController',
+    action: 'getAccData',
     skipAssets: true
   },
 

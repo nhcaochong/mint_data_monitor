@@ -9,7 +9,6 @@ var jsonData_Binance = {};
 var jsonData_Coinbase = {};
 
 module.exports = {
-
   attributes: {
     exchange: {type: 'string', required: true},
     balance: {type: 'number', required: true},
