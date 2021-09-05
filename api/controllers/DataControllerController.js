@@ -70,19 +70,19 @@ module.exports = {
         console.log("pdate day7 price:"+p[0].price);
       }
       //30天
-      pdate = date - 24*60*60*29;
+      pdate = date - 24*60*60*30;
       var p = await Price.find({date:pdate});
       if(p.length>0){
         day30 = (price - p[0].price) / p[0].price *100;
       }
       //60天
-      pdate = date - 24*60*60*59;
+      pdate = date - 24*60*60*60;
       var p = await Price.find({date:pdate});
       if(p.length>0){
         day60 = (price - p[0].price) / p[0].price *100;
       }
       //90天
-      pdate = date - 24*60*60*89;
+      pdate = date - 24*60*60*90;
       var p = await Price.find({date:pdate});
       if(p.length>0){
         day90 = (price - p[0].price) / p[0].price *100;
