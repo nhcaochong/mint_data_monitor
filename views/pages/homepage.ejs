@@ -453,6 +453,10 @@
     $.each(result, function (i, field) {
       var b = field.balance.toFixed(2);/*保留两位小数*/
       var change = field.change.toFixed(0);
+      var date = new Date(field.date * 1000);
+        Y = date.getFullYear() + '-';
+        M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+        D = date.getDate() + '';
       $("#bitcoin_balance_binance").text(b);
       if (change < 0) {
         $("#bitcoin_change_binance").addClass("text-success");
@@ -469,6 +473,10 @@
     $.each(result, function (i, field) {
        var b = field.balance.toFixed(0);/*保留两位小数*/
        var change = field.change.toFixed(0);
+       var date = new Date(field.date * 1000);
+        Y = date.getFullYear() + '-';
+        M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+        D = date.getDate() + '';
        $("#bitcoin_balance_all").text(b);
       if (change < 0) {
         $("#bitcoin_change_all").addClass("text-success");
