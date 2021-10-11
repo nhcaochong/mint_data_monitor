@@ -580,7 +580,7 @@
    //设置 MCD
   $.getJSON("/coin", { sort: "id desc", limit: 1 }, function (result) {
     $.each(result, function (i, field) {
-        var date = new Date(field.createdAt);
+        var date = new Date(field.updatedAt);
         Y = date.getFullYear() + '-';
         M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
         D = date.getDate() + '';

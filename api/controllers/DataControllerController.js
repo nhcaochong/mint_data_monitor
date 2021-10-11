@@ -58,6 +58,14 @@ module.exports = {
       date = list[i].date;
       day1 = (price - list[i+1].price) / list[i+1].price *100;
 
+      
+
+
+
+
+
+
+
 
       //7天
       pdate = date - 24*60*60*6;//不包括今天的7天前
