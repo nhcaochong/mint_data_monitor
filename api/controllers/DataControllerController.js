@@ -58,13 +58,7 @@ module.exports = {
       date = list[i].date;
       day1 = (price - list[i+1].price) / list[i+1].price *100;
 
-      
-
-
-
-
-
-
+    
 
 
       //7天
